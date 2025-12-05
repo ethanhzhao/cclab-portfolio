@@ -1,0 +1,72 @@
+/* Portfolio Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, serif;
+    line-height: 1.7;
+    color: #222;
+    background: #fff;
+}
+
+nav, main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+main {
+    padding-top: 60px;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: normal;
+    color: #E82E21;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #222;
+    text-decoration: none;
+    border-bottom: 2px solid #E82E21;
+}
+
+a:hover {
+    color: #E82E21;
+}
+
+nav a {
+    margin-right: 15px;
+}
+
+#about {
+    margin-bottom: 50px;
+    color: #555;
+}
+
+#projects ul {
+    list-style: none;
+}
+
+#projects li {
+    margin-bottom: 12px;
+}
+
+#contact {
+    margin-top: 60px;
+    color: #777;
+}
+
+.description {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#sketch-container {
+    margin: 30px 0;
+}
