@@ -1,0 +1,11 @@
+Press 'M' to mute or unmute sounds.
+
+I created a subway clock. I wanted it to be from the POV of a person who is maybe sitting at a subway station and observing the trains passing by. The sky also changes from day to night in the background to signify time passing.
+
+I added sounds like ambience and the train passing sounds. Both sounds are on loop forever. The train passing sounds use the setVolume() function to start at 0 for default and to control the fade in and out when a train comes by. The further train is also quieter than the closer train. The ambient sounds are just always on loop at a low volume. The mute and unmute use outputVolume() function to control the entire scene volume instead of each individual sound's volume.
+
+The changing background uses a state machine to control when the color changes and when it stays a certain color. It uses the lerp function as well as some map functions to control the speed and gradient animations. 
+
+The background is very simple and made from primatives.
+
+AI usage: I used Gemini AI to help me with some of the logic for the gradient background animation because that was pretty challenging to figure out. I also used it to create the windows of the train (math is hard and I didn't want to do the calculations :c )

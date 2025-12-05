@@ -1,0 +1,16 @@
+Waving Square Optical Illusion
+
+Process:
+I first started with making a grid of squares. The grid takes a predetermined square size and adjusts the size of the grid based on the canvas size. I then made every other square a lighter blue color and every other square a darker blue color. Because the squares are rounded at the corners, the star shape between the squares shows the background color, which is an offwhite. 
+
+The hardest part that made me want to rip my hair out was figuring out how to do the black parts in between the squares in the grid because they did not follow a very easy to understand pattern. What I did was I treated them as their own grid and asked Gemini to give me a function for when n is the row number, f(n) outputs a sequence of numbers that correspond to which columns the black rectangles lie on. For example, when n = 0, f(n) = [0, 2, 3, 5, 8, 10, 11, 13, etc...]. I found out that there is a formula for something like this but it is really complicated because theres 2 starting indicies you have to consider for or something like that idk I was never a math major so it really started hurting my brain lol. This way I did it also only gave me black squares for the bottom left area and admittedly, I did also have trouble figuring out a way to flip it to the top right without overcomplicating it and completely changing the formula I had that already was working so I just drew each black rectangle again except the location coordinates would flip from x, y to y, x. As a result, this isn't exactly the same pattern as the real optical illusion, but I think the one I made still works okay enough and also the math was making me tweak so hard so I moved on. 
+
+I figured since the optical illusion is wavy, I could add a fun beach theme to the scene. So for the beach theme, I added a sand texture and it has a blend mode of soft light over a beige rectangle at the bottom of the screen. I also added beach umbrellas but those are vectors I made with the pen tool in figma because I could not stand to make more shapes using primitives in p5. I also wanted to make a little me walking/swimming around so I made a very simple pixel sprite and walking animation. I also cut it in half when the character is in the water to make it look like he is swimming. Each direction has 2 frames so very simple stuff. This part was the most fun to code. It's just a switch statement to figure out what direction based on the keyIsDown function for the arrow keys. When an arrow 'keyIsDown', the direction flag will change to that direction, the character x or y value will also update based on the direction and every 10 frames, the sprite will change to the other frame for its animation. In the switch statement, the check for if the character is in the water is also made. This is just if the y position is above or below 415. The shadow is also updated to follow the character based on if it is in the water or not.
+
+
+Reflection questions:
+How might your optical illusion get deployed in the world around you? May it be incorporated into a browser extension? 
+maybe as a minigame or one of those google doodle games I guess
+
+Can it possibly be turned into a piece of wearable? 
+probably not in its game form but maybe as a static image, sure
