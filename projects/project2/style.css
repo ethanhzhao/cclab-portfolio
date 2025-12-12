@@ -5,3 +5,13 @@ html, body {
 canvas {
   display: block;
 }
+
+/* Set aspect ratio for the sketch container */
+#sketch-container {
+    display: block;
+    max-width: 400px; /* Set max-width to original canvas width */
+    margin: 30px auto; /* Center the container and add vertical spacing */
+    aspect-ratio: 400 / 400;
+    border-radius: 10px; /* Set the border radius */
+    overflow: hidden; /* This clips the canvas corners */
+}

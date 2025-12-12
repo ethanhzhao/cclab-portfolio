@@ -1,0 +1,244 @@
+/* Portfolio Styles */
+@font-face {
+  font-family: Alte Haas Grotek; /* set name */
+  src: url(AlteHaasGroteskBold.ttf); /* url of the font */
+  font-weight: bold;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Figtree, sans-serif;
+    line-height: 1.7;
+    color: #222;
+    background: #fff;
+}
+
+nav, main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+main {
+    padding-top: 20px;
+}
+a {
+    color: #222;
+    text-decoration: none;
+    border-bottom: 2px solid #E82E21;
+}
+
+a:hover {
+    color: #E82E21;
+}
+
+h1 {
+    font-family: 'Alte Haas Grotek';
+    font-size: 2.5em;
+    font-weight: normal;
+    color: #E82E21;
+    margin-bottom: 20px;
+}
+
+
+nav a {
+    margin-right: 0; /* Remove the fixed margin */
+    font-family: 'Alte Haas Grotek';
+    font-size: 20px;
+}
+
+.centered-img {
+    display: block;
+    margin: 40px auto; /* Adds vertical space and centers horizontally */
+    max-width: 100%;   /* Ensures the image is responsive */
+}
+
+
+#about {
+    
+    color: #555;
+    max-width: 800px;
+    text-align: center;
+    font-family: Figtree;
+}
+
+#projects {
+    padding-top: 50px;
+}
+
+#projects ul {
+   
+    list-style: none;
+}
+
+#projects li {
+    
+    margin-bottom: 12px;
+}
+
+#contact {
+    margin-top: 60px;
+    text-align: center;
+}
+
+#contact a {
+    border-bottom: none; /* Remove underline from icons */
+    margin: 0 15px; /* Add space between icons */
+}
+
+#contact a i {
+    font-size: 1.8rem; /* Increase icon size */
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+#contact a:hover i {
+    color: #E82E21; /* Match the main link hover color */
+}
+
+.portfolio-iframe {
+    width: 100%; /* Make it fill the container's width */
+    height: 600px; /* Give it a fixed height */
+    border: 1px solid #ddd; /* Add a subtle border */
+    border-radius: 8px; /* Match the style of your project cards */
+    margin-top: 20px;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center; /* Center the videos horizontally */
+    gap: 20px; /* Adds space between the videos */
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allows videos to stack on smaller screens */
+}
+
+.video-row {
+    height: 500px; /* Define a height for the vertical videos */
+    max-width: 45%; /* Limit width to allow side-by-side layout */
+    border-radius: 8px; /* Match your site's aesthetic */
+    object-fit: cover;
+}
+
+.description {
+    color: #555;
+    margin-bottom: 20px;
+    font-family: Figtree, sans-serif;
+}
+
+#sketch-container {
+    margin: 30px 0;
+}
+
+/* Styles for the header image */
+.header-image-container {
+    margin-bottom: 40px; /* Space below the header image */
+    text-align: center; /* Fallback for centering if image is inline-block */
+}
+
+.header-image {
+    display: block; /* Makes the image a block element */
+    max-width: 800px; /* Maximum width of the image */
+    width: 100%; /* Ensures responsiveness */
+    height: 300px; /* Fixed height to create a rectangular shape */
+    object-fit: cover; /* Ensures the image covers the area, cropping if necessary */
+    margin: 0 auto; /* Centers the block image horizontally */
+    border-radius: 8px; /* Optional: matches the border-radius of project cards */
+}
+
+/* Add this to your styles.css file */
+
+.project-grid {
+    display: grid;
+    /* Create 3 equal-width columns */
+    grid-template-columns: repeat(3, 1fr);
+    /* Add space between the project cards */
+    gap: 20px;
+}
+
+.project-card {
+    border-radius: 8px;
+    text-decoration: none;
+    display: block;
+    text-decoration: none;
+    border-bottom: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 200px; /* Give the rectangles a fixed height */
+    transition: background-color 0.3s, transform 0.3s;
+    position: relative; /* Needed for positioning the title */
+    overflow: hidden; /* Hides parts of the image that go outside the card */
+    background-color: #222; /* Fallback color */
+}
+
+.project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.project-title {
+    color: #333;
+    padding: 0.75rem 0.5rem;
+    font-size: 1.25em;
+    font-weight: 500;
+    text-align: center;
+    font-family:'Instrument Serif', serif;
+    font-style: italic;
+}
+
+.project-item {
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px); /* Add a subtle lift effect on hover */
+}
+
+/* Make the 7th project item span all 3 columns */
+.project-item:nth-child(7) {
+    grid-column: 1 / -1;
+}
+
+/* Make the 7th project card twice as tall */
+.project-item:nth-child(7) .project-card {
+    height: 300px;
+}
+
+
+.project-card:hover img {
+    transform: scale(1.05); /* Zoom effect on the image */
+}
+
+/* This makes the grid responsive on smaller screens */
+@media (max-width: 768px) {
+    .project-grid {
+        /* Switch to a 2-column layout on tablets */
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .project-grid {
+        /* Switch to a single column on mobile phones */
+        grid-template-columns: 1fr;
+    }
+}

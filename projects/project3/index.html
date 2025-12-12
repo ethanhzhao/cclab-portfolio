@@ -3,12 +3,42 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="../projectstyle.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
 
   </head>
   <body>
+    <nav>
+        <a href="../../index.html">Project Showcase</a>
+        <a href="../../about.html">About Me</a>
+        <a href="../../work.html">Check out my other work!</a>
+    </nav>
+
     <main>
+        <h1>Train O'Clock</h1>
+        <div id="sketch-container">
+            <!-- Your p5.js canvas will go here -->
+        </div>
+        <p class="description">
+            Press 'M' to mute or unmute sounds or use button in the top right.
+
+            <br><br>
+
+            I created a subway clock. I wanted it to be from the POV of a person who is maybe sitting at a subway station and observing the trains passing by. The sky also changes from day to night in the background to signify time passing.
+
+            <br><br>
+
+            I added sounds like ambience and the train passing sounds. Both sounds are on loop forever. The train passing sounds use the setVolume() function to start at 0 for default and to control the fade in and out when a train comes by. The further train is also quieter than the closer train. The ambient sounds are just always on loop at a low volume. The mute and unmute use outputVolume() function to control the entire scene volume instead of each individual sound's volume.
+
+            <br><br>
+
+            The changing background uses a state machine to control when the color changes and when it stays a certain color. It uses the lerp function as well as some map functions to control the speed and gradient animations. The background is very simple and made from primatives.
     </main>
     <script src="sketch.js"></script>
   </body>

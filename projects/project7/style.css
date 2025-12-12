@@ -6,3 +6,12 @@ html, body {
 canvas {
   display: block;
 }
+
+#sketch-container {
+    display: block;
+    max-width: 1080; 
+    margin: 30px auto; 
+    aspect-ratio: 1920 / 1080;
+    border-radius: 10px; 
+    overflow: hidden; 
+}

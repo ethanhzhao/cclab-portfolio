@@ -5,7 +5,7 @@ let bkgdCol;
 
 let dayArr;
 
-let resetBtn, leftBtn, rightBtn;
+let canvas, resetBtn, leftBtn, rightBtn;
 let time = 0;
 
 function preload() {
@@ -52,7 +52,9 @@ function preload() {
 
 function setup() {
   noStroke();
-  createCanvas(1050, 600);
+  canvas = createCanvas(1050, 600);
+  canvas.parent('sketch-container');
+  
   bkgdCol = color(242, 237, 223);
   
   dayArr = ['THURS', 'FRI', 'SAT', 'SUN', 'MON', 'TUES', 'WED'];
@@ -173,45 +175,28 @@ function setup() {
   }
   
   leftBtn = createButton('<');
-  leftBtn.position(width / 2 - 65, height - 35);
-  leftBtn.mousePressed(() => {
-    for (let i  = 0; i < outfits.length; i++) {
-      let clothingItems = outfits[i];
-      for (let j = 0; j < clothingItems.length; j++) {
-        let item = clothingItems[j];
-        item.optionIndex = (item.optionIndex + 2) % 3;
-      }
-    }
-    console.log('<: back');
-  });
-  
-  resetBtn = createButton('Reset');
-  resetBtn.position(width / 2 - 24, height - 35);
-  resetBtn.mousePressed(() => {
-    for (let i  = 0; i < outfits.length; i++) {
-      let clothingItems = outfits[i];
-      for (let j = 0; j < clothingItems.length; j++) {
-        let item = clothingItems[j];
-        item.optionIndex = 0;
-      }
-    }
-    console.log('<: reset :>');
-  });
-  
   rightBtn = createButton('>');
-  rightBtn.position(width / 2 + 43, height - 35);
-  rightBtn.mousePressed(() => {
-    for (let i  = 0; i < outfits.length; i++) {
-      let clothingItems = outfits[i];
-      for (let j = 0; j < clothingItems.length; j++) {
-        let item = clothingItems[j];
-        item.optionIndex = (item.optionIndex + 1) % 3;
-      }
-    }
-    console.log('forward :>');
-  });
-  
-  
+  resetBtn = createButton('Reset');
+  positionButtons();
+
+  leftBtn.mousePressed(() => cycleOutfits(-1));
+  resetBtn.mousePressed(() => cycleOutfits(0, true));
+  rightBtn.mousePressed(() => cycleOutfits(1));
+}
+
+function positionButtons() {
+  // Position the buttons relative to the canvas's position
+  const yPos = canvas.position().y + height - 35;
+  const xStart = canvas.position().x + width / 2;
+
+  leftBtn.position(xStart - 65, yPos);
+  rightBtn.position(xStart + 43, yPos);
+  resetBtn.position(xStart - resetBtn.width / 2, yPos);
+}
+
+function windowResized() {
+  // Reposition the buttons whenever the window is resized
+  positionButtons();
 }
 
 function draw() {
@@ -226,7 +211,7 @@ function draw() {
       fill(66, 52, 44);
       if (dayArr[item.columnIndex].length == 4 || dayArr[item.columnIndex].length == 5) {
         text(dayArr[item.columnIndex], item.x + 45, 50);
-        console.log(dayArr[item.columnIndex]);
+        //console.log(dayArr[item.columnIndex]);
       } else if (dayArr[item.columnIndex].length === 3) {
         text(dayArr[item.columnIndex], item.x + 52, 50);
       }
@@ -269,6 +254,22 @@ function draw() {
       }
     }
   }
+}
+
+function cycleOutfits(direction, reset = false) {
+  for (let i = 0; i < outfits.length; i++) {
+    let clothingItems = outfits[i];
+    for (let j = 0; j < clothingItems.length; j++) {
+      let item = clothingItems[j];
+      if (reset) {
+        item.optionIndex = 0;
+      } else {
+        // Ensure result is always positive
+        item.optionIndex = (item.optionIndex + direction + 3) % 3;
+      }
+    }
+  }
+  //console.log(reset ? 'reset' : `cycled: ${direction}`);
 }
 
 //draw based on type: chain, stain, heart, one/two/threeYrs
@@ -350,7 +351,7 @@ function mousePressed() {
       let item = outfits[i][j];
       if (mouseX > item.x && mouseX < item.x + item.w && mouseY > item.y && mouseY < item.y + item.h) {
         item.optionIndex = (item.optionIndex + 1) % 3;
-        console.log(`Cycled ${item.name} in outfit #${i + 1} to option ${item.optionIndex}`);
+        //console.log(`Cycled ${item.name} in outfit #${i + 1} to option ${item.optionIndex}`);
         return; 
       }
     }

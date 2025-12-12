@@ -1,7 +1,7 @@
 let doors = [];
-const doorWidth = 120;
-const doorHeight = 180;
-const doorPadding = 50;
+const doorWidth = 90;
+const doorHeight = 135;
+const doorPadding = 20;
 
 let doorAnimate = {
     frame: 0,
@@ -23,6 +23,12 @@ const TITLE_NUM_FRAMES = 3;
 let TITLE_FRAME_WIDTH = 0;
 let TITLE_FRAME_HEIGHT = 0;
 
+let gameState = {
+    completed: {
+        mirror: false,
+        bathroom: false
+    }
+};
 function setupLevelSelectScene() {
     textFont(font);
     textAlign(CENTER, CENTER);
@@ -49,7 +55,8 @@ function setupLevelSelectScene() {
         h: doorHeight,
         target: 'mirror',
         label: 'Mirror',
-        row: 2
+        row: 2,
+        unlocked: true
     });
 
     doors.push({ 
@@ -59,17 +66,19 @@ function setupLevelSelectScene() {
         h: doorHeight,
         target: 'bathroom',
         label: 'Bathroom',
-        row: 1
+        row: 1,
+        unlocked: gameState.completed.mirror
     });
     
     doors.push({ 
-        x: width - doorWidth - doorPadding, 
+        x: width - doorWidth - doorPadding - 50, 
         y: centerScreenY - doorWidth / 2, 
         w: doorWidth, 
         h: doorHeight,
         target: 'maze',
         label: 'Maze',
-        row:0
+        row:0,
+        unlocked: gameState.completed.bathroom
     });
 
     doorAnimate.frame = 0;
@@ -168,13 +177,22 @@ function drawStartScene() {
     // Draw Doors
     for (let door of doors) {
         //console.log('after: ',doors);
-        let sx = doorAnimate.frame * DOOR_FRAME_WIDTH;
+        let sx;
+        if (door.unlocked) {
+            sx = doorAnimate.frame * DOOR_FRAME_WIDTH;
+        } else {
+            sx = 0; // Keep locked doors on the first frame of animation
+        }
         let sy = door.row * DOOR_FRAME_HEIGHT;
 
         push();
         // image(doorImg, door.x, door.y, door.w, door.h); // <-- OLD
 
+        if (!door.unlocked) {
+            tint(69,69,69);
+        }
         image(doorImg, door.x, door.y, door.w, door.h, sx, sy, DOOR_FRAME_WIDTH, DOOR_FRAME_HEIGHT);
+        noTint();
         pop();
     }
 
@@ -193,9 +211,11 @@ function checkCollisions() {
             player.y < door.y + door.h &&
             player.y + player.h > door.y) {
             
-            // Collision detected!
-            switchToScene(door.target);
-            break;
+            if (door.unlocked) {
+                // Collision detected and door is unlocked!
+                switchToScene(door.target);
+                break;
+            }
         }
     }
 }

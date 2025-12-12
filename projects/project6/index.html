@@ -3,12 +3,57 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="../projectstyle.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
 
   </head>
   <body>
+    <nav>
+        <a href="../../index.html">Project Showcase</a>
+        <a href="../../about.html">About Me</a>
+        <a href="../../work.html">Check out my other work!</a>
+    </nav>
+
     <main>
+      <h1>Outfit Data Portrait</h1>
+        <div id="sketch-container">
+            <!-- Your p5.js canvas will go here -->
+        </div>
+        <p class="description">
+            This is heavily inspired by Giorgia Lupi's style of data visualization. Her approach rejects the idea of data as purely objective or impersonal and instead treats it as a reflection of human experiences. Her work is also usually more hand drawn and personal, using simple shapes and symbols to reflect a more human centered design. So for my data, I chose to track my outfits. I wanted to use the simpliest shapes and colors as possible to visualize it (economy of means) so I made each element a rectangle that is vaguely the size of each clothing item and for the color, I took a picture of each clothing item and took the average color from the picture using photoshop. There are also 3 modes which can be cycled by the arrows to control them all or mouse clicks to control individual ones and then a reset button to reset it to the default mode.
+
+            <br><br>
+            Row 1 rectangles: Outer layer (jacket, outer shirt)
+            <br>
+            Row 2 rectangles: Inner layer (shirt)
+            <br>
+            Row 3 rectangles: Pants
+            <br>
+            Row 4 rectangles: Socks
+            <br><br>
+
+            For the second mode, I added symbols on some of the corners to denote some extra data I collected within the week:
+            <br><br>
+            Heart: someone complimented
+            <br>
+            Chain: accessories (necklace, belt)
+            <br>
+            Dots: stain
+            <br>
+            Lines: (only for socks) amount of years I've owned it
+            <br><br>
+
+            For the third mode, it's just the picture of the article of clothing in question and each item wiggles using the p5 noise function.
+
+            <br><br>
+            This project got really complicated and at first when I just wanted to nest arrays within arrays but I realized it actually would be easier to create some new object types. I ended up nesting color arrays and clothing data objects into a big clothing items array.
+        </p>
     </main>
     <script src="sketch.js"></script>
   </body>

@@ -1,0 +1,91 @@
+@font-face {
+  font-family: Alte Haas Grotek; /* set name */
+  src: url(../AlteHaasGroteskBold.ttf); /* url of the font */
+  font-weight: bold;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+body {
+    font-family: Figtree, sans-serif;
+    line-height: 1.7;
+}
+
+nav {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+nav a {
+    margin-right: 0; /* Remove the fixed margin */
+    font-family: 'Alte Haas Grotek';
+    font-size: 20px;
+}
+
+a {
+    color: #222;
+    text-decoration: none;
+    border-bottom: 2px solid #E82E21;
+}
+
+a:hover {
+    color: #E82E21;
+}
+
+
+canvas {
+    display: block;
+    width: 100%; /* Make canvas fill its container */
+    height: 100%; /* Make canvas fill its container */
+}
+
+/* Center the project title */
+h1 {
+    text-align: center;
+    color: #E82E21;
+}
+
+.description {
+  max-width: 800px;
+  margin: 20px auto; /* 20px space on top/bottom, auto on sides */
+  padding: 0 20px;   /* Little padding so text doesn't touch screen edge on mobile */
+  font-family: 'Figtree', sans-serif;
+  line-height: 1.6;
+}
+
+.quote {
+    font-style: italic;
+    max-width: 800px;
+    padding-left: 60px; 
+}
+
+/* copy paste to each project's css 
+#sketch-container {
+    display: block;
+    max-width: 600px; 
+    margin: 30px auto; 
+    aspect-ratio: 600 / 800;
+    border-radius: 10px; 
+    overflow: hidden; 
+}
+*/

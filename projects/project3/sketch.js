@@ -26,7 +26,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(800, 600);
+  let canvas = createCanvas(800, 600);
+  canvas.parent('sketch-container');
 
   train0Sound.setVolume(0);
   train0Sound.loop();
@@ -96,6 +97,8 @@ function draw() {
   //platform yellow
   fill(255, 220, 0);
   rect(0, 500, width, 15);
+  
+  drawMuteButton();
 }
 
 function drawPlatform() {
@@ -172,23 +175,53 @@ function playTrainSound() {
   
 }
 
+function mousePressed() {
+  // Check if the mute button was clicked
+  let buttonX = width - 50;
+  let buttonY = 10;
+  let buttonSize = 40;
+
+  if (mouseX > buttonX && mouseX < buttonX + buttonSize && mouseY > buttonY && mouseY < buttonY + buttonSize) {
+    toggleMute();
+  }
+}
+
 function keyPressed() {
-  // if (key == '0') {
-  //   playTrainSound();
-  // } else if (key == '1') {
-  //   playTrainSound();
-  // }
-  //console.log(outputVolume().value);
-  
   if (key == 'm') {
-    if (outputVolume().value == 1) {
-      outputVolume().value = 0;
-    } else {
-      outputVolume().value = 1;
-    }
-    
-    //console.log(outputVolume());
-    
+    toggleMute();
+  }
+}
+
+function toggleMute() {
+  if (getOutputVolume() > 0) {
+    outputVolume(0);
+  } else {
+    outputVolume(1);
+  }
+}
+
+function drawMuteButton() {
+  let buttonX = width - 50;
+  let buttonY = 10;
+  let buttonSize = 40;
+
+  push();
+  stroke(255);
+  strokeWeight(2);
+  noFill();
+
+  // Draw speaker icon base
+  
+  triangle(buttonX, buttonY + 20, buttonX + 10, buttonY + 8, buttonX + 10, buttonY + 32);
+
+  if (getOutputVolume() === 0) { // Muted
+    // Draw a cross over the speaker
+    strokeWeight(3);
+    line(buttonX, buttonY + 10, buttonX + 15, buttonY + 30);
+  } else { // Not muted
+    // Draw sound waves
+    arc(buttonX + 10, buttonY + 20, 20, 20, -PI/3, PI/3);
+    arc(buttonX + 10, buttonY + 20, 35, 35, -PI/3, PI/3);
   }
 }
 
@@ -234,4 +267,3 @@ function drawBackground() {
   background(interpolatedColor);
   
 }
-

@@ -5,17 +5,19 @@ let head, body, legs, copter;
 let cat, frog, bear, raccoon, animalArr;
 let index = 0;
 
-let cX = 200;
-let cY = -150;
+// let cX = 200;
+// let cY = -150;
 //-150 start, -10 target
+let canvas;
+let cX, cY;
 
-let canvas, bkgdColor, hue;
+let canvastexture, bkgdColor, hue;
 let party = false;
 
 function preload() {
   theme = loadSound('./audio/theme.mp3');
   
-  canvas = loadImage('./images/canvas.jpg');
+  canvastexture = loadImage('./images/canvas.jpg');
   
   head = loadImage('./images/head.png');
   body = loadImage('./images/body.png');
@@ -32,11 +34,15 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(600, 800);
+ 
+  canvas = createCanvas(600, 800);
+  canvas.parent('sketch-container');
 
   button = createButton('Party Mode!');
-  button.position(475,300);
-  button.mousePressed(buttonPress);
+  positionButton(); // Set initial position
+
+  cX = width / 2;
+  cY = -150; // Start the copter off-screen
   
   colorMode(HSB, 100);
   bkgdColor = color(0, 5, 100);
@@ -45,6 +51,15 @@ function setup() {
   animalArr = ['cat', 'frog', 'bear', 'raccoon', 'fish'];
 }
 
+function positionButton() {
+  // Position the button relative to the canvas
+  button.position(canvas.position().x + width - button.width - 20, canvas.position().y + 20);
+  button.mousePressed(buttonPress);
+}
+
+function windowResized() {
+  positionButton(); // Reposition the button when the window is resized
+}
 function draw() {  
   
   if (party) {
@@ -80,6 +95,7 @@ function reset() {
   index = 0;
   cX = 200;
   cY = -150;
+  cY = -150; // Reset copter position
   copter.hide();
   bkgdColor = color(0, 5, 100);
   button.html('Party Mode!');
@@ -102,7 +118,7 @@ function canvasTexture() {
   translate(600, 0);
   rotate(90);
   scale(1.5);
-  image(canvas, 0, 0);
+  image(canvastexture, 0, 0);
   pop();
 }
 
@@ -129,11 +145,16 @@ function updateIndex() {
 function copterAppear() {
   copter.show();
   copter.position(cX, cY);
+  // Position the DOM element relative to the canvas's position
+  copter.position(canvas.position().x + cX, canvas.position().y + cY);
 
   if (cY < -10) {
+  // Animate the copter moving down onto the screen
+  if (cY < 10) { // Target Y position
     cY++;
     //console.log(cY);
   }
+}
 }
 
 function animalShow(animalInd) {

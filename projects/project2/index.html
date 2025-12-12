@@ -3,12 +3,33 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="../projectstyle.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
 
   </head>
   <body>
+    <nav>
+        <a href="../../index.html">Project Showcase</a>
+        <a href="../../about.html">About Me</a>
+        <a href="../../work.html">Check out my other work!</a>
+    </nav>
+
     <main>
+      <h1>Fruity Funhouse Mirror</h1>
+        <div id="sketch-container">
+            <!-- Your p5.js canvas will go here -->
+        </div>
+        <p class="description">
+            The theme of my assignment is "funhouse mirror." If you press the 'm' key, the size of the character will change with the mouse position, much like a distortion mirror you would find at a funhouse that distorts the way you look based on concave/convex surfaces of the mirror. Pressing the 'm' key again returns it to normal. This is done using the mouseX, mouseY variables within the map() and scale() functions. In the default state, the character's eyes move where the mouse moves, which is also done using the mouseX and mouseY variables within the map() function. However, when the mirror is in distort mode, the eyes will not track with the mouse. The eyes also always are blinking. This is done using some if statements and essentially, every 100 frames, the eyes will change from circles to lines for 5 frames and then goes back to circles.
+            Additionally, if you press the 'h' key, the hat of the character will randomly change. There are 4 different hats (strawberry, orange, lemon, watermelon) that will randomly be put on everytime you press the button. This is done using the random() function and a switch statement.
+            This assignment was a lot of fun to code and I had a great time making each of the little hats for the character.
+        </p>
     </main>
     <script src="sketch.js"></script>
   </body>

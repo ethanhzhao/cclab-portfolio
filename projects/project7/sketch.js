@@ -1,6 +1,8 @@
 let currentScene = 'start'; 
 let p5Canvas;
 let isLocked = false;
+let backgroundMusic;
+let musicStarted = false;
 
 let mirrorLevelComplete, bathroomLevelComplete, mazeLevelComplete = false;
 
@@ -24,6 +26,10 @@ let playerAnimate = {
     dir: 0, // 0:down, 1:right, 2:left, 3:up
     isMoving: false
 };
+
+// UI Buttons
+let controlsButton = { x: 0, y: 10, w: 200, h: 40, padding: 10 };
+let controlsEnabled = false; // Master switch for audio and scroll lock
 
 //fade function
 let isFading = false;
@@ -74,6 +80,7 @@ function preload() {
     toiletOpenImg = loadImage('./images/toilet_open.png');
     toiletClosedImg = loadImage('./images/toilet_closed.png');
     sinksImg = loadImage('./images/sinks.png');
+    bathroomTileImg = loadImage('./images/bathroomtile.png');
 
     floorTexture = loadImage('placeholdertexture.jpeg');
     wallTexture = loadImage('./images/mazewall.png');
@@ -81,10 +88,13 @@ function preload() {
     finalImg = loadImage('./images/final.gif');
 
     font = loadFont('pixely.ttf')
+
+    backgroundMusic = loadSound('nevermindeverythingsok.mp3'); 
 }
 
 function setup() {
     p5Canvas = createCanvas(windowWidth, windowHeight, P2D);
+    p5Canvas.parent('sketch-container');
     // Start with the 2D intro scene
     // This function (setupIntro) is defined in introScene.js
     
@@ -93,6 +103,8 @@ function setup() {
         isLocked = (document.pointerLockElement === p5Canvas.elt);
     });
     triggerFade(null, 1000, 0, false);
+
+    setupScrollLock();
 }
 
 function draw() {
@@ -111,10 +123,13 @@ function draw() {
         drawFinalScene();
     }
 
+    drawUIButtons();
     drawFade();
 }
 
 function keyPressed() {
+    startMusicLoop();
+
       // DEBUG Scene Switching
     if (keyCode === 49) { // '1'
         switchToScene('start');
@@ -136,6 +151,15 @@ function keyPressed() {
 }
 
 function mouseClicked() {
+    startMusicLoop();
+
+    // Check for the main controls button click
+    if (mouseX > controlsButton.x && mouseX < controlsButton.x + controlsButton.w &&
+        mouseY > controlsButton.y && mouseY < controlsButton.y + controlsButton.h) {
+        toggleControls();
+        return;
+    }
+
     if (currentScene === 'maze') {
         lockPointer();
     } else if (currentScene === 'mirror') {
@@ -170,26 +194,33 @@ function switchToScene(sceneName) {
 
     if (sceneName === 'start') {
         p5Canvas = createCanvas(windowWidth, windowHeight, P2D); // 2D
+        p5Canvas.parent('sketch-container');
         exitPointerLock();
         setupLevelSelectScene();
     } else if (sceneName === 'maze') {
         p5Canvas = createCanvas(windowWidth, windowHeight, WEBGL); // 3D
+        p5Canvas.parent('sketch-container');
         lockPointer();
         setupMazeScene();
     } else if (sceneName === 'mirror') {
         p5Canvas = createCanvas(windowWidth, windowHeight, P2D); // 2D
+        p5Canvas.parent('sketch-container');
         exitPointerLock();
         setupMirrorScene();
     } else if (sceneName === 'bathroom') {
         p5Canvas = createCanvas(windowWidth, windowHeight, P2D); // 2D
+        p5Canvas.parent('sketch-container');
         exitPointerLock();
         setupBathroomScene();
     } else if (sceneName === 'final') {
         p5Canvas = createCanvas(windowWidth, windowHeight, P2D); // 2D
+        p5Canvas.parent('sketch-container');
         exitPointerLock();
         setupFinalScene();
     }
 
+    // Re-apply scroll lock to the new canvas after a scene change
+    setupScrollLock();
     triggerFade(null, 1000, 0, false);
 }
 
@@ -202,6 +233,28 @@ function lockPointer() {
 function exitPointerLock() {
     if (isLocked) {
         document.exitPointerLock();
+    }
+}
+
+function startMusicLoop() {
+    if (backgroundMusic.isLoaded() && !musicStarted) {
+        backgroundMusic.loop();
+        backgroundMusic.setVolume(0.3); // Set volume to 30%
+        musicStarted = true;
+    }
+}
+
+function toggleControls() {
+    controlsEnabled = !controlsEnabled;
+
+    // Update music volume based on the new state
+    if (controlsEnabled) {
+        backgroundMusic.setVolume(0.3);
+        disableScroll();
+    } else {
+        backgroundMusic.setVolume(0);
+        // If we are disabling controls, make sure to remove any active scroll listeners
+        enableScroll();        
     }
 }
 
@@ -305,4 +358,65 @@ function drawFade() {
             switchToScene(fadeTargetScene);
         }
     }
+}
+
+function drawUIButtons() {
+    // Reset camera to draw a 2D overlay, important for WEBGL mode
+    if (p5.instance && p5.instance._renderer.isP3D) {
+        camera();
+        ortho();
+    }
+
+    push();
+    rectMode(CORNER);
+    textAlign(CENTER, CENTER);
+    textSize(16);
+
+    // --- Main Controls Button ---
+    controlsButton.x = width - controlsButton.w - controlsButton.padding;
+    controlsButton.y = controlsButton.padding;
+
+    stroke(255);
+    strokeWeight(2);
+    fill(0, 150);
+    rect(controlsButton.x - 5, controlsButton.y - 5, controlsButton.w - 45, controlsButton.h + 15);
+
+    noStroke();
+    fill(255);
+    let buttonText = controlsEnabled ? 'Game Focus: \nON' : 'Game Focus: \nOFF';
+    textAlign(LEFT);
+    text(buttonText, controlsButton.x + controlsButton.w / 2 - 90, controlsButton.y + controlsButton.h / 2);
+
+    pop();
+}
+
+function setupScrollLock() {
+    if (p5Canvas && p5Canvas.elt) {
+        p5Canvas.elt.addEventListener('mouseenter', disableScroll);
+        p5Canvas.elt.addEventListener('mouseleave', enableScroll);
+    }
+}
+
+const scrollKeys = { 32: 1, 33: 1, 34: 1, 35: 1, 36: 1, 37: 1, 38: 1, 39: 1, 40: 1 }; // Space, PageUp/Down, End, Home, Arrows
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (scrollKeys[e.keyCode]) {
+        preventDefault(e);
+    }
+}
+
+function disableScroll() {
+    if (!controlsEnabled) return; // Do nothing if the user has disabled controls
+    window.addEventListener('wheel', preventDefault, { passive: false });
+    window.addEventListener('keydown', preventDefaultForScrollKeys, { passive: false });
+}
+
+function enableScroll() {
+    // Always remove listeners when mouse leaves, regardless of user setting
+    window.removeEventListener('wheel', preventDefault);
+    window.removeEventListener('keydown', preventDefaultForScrollKeys);
 }

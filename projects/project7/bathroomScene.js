@@ -83,7 +83,25 @@ function drawBathroomScene() {
         translate(-width / 2, -height / 2, 0); 
     }
     
-    background(220, 230, 220); 
+    // Tile the background image if it exists
+    background(220, 230, 220);
+    if (bathroomTileImg) {
+        const tileScale = 0.45; // Make tiles 50% of their original size
+        const tileWidth = bathroomTileImg.width * tileScale;
+        const tileHeight = bathroomTileImg.height * tileScale;
+        
+        for (let y = 0; y < height; y += tileHeight) {
+            for (let x = 0; x < width; x += tileWidth) {
+                push();
+                imageMode(CORNER);
+                tint(220, 230, 220, 100); //white tint with less opacity
+                image(bathroomTileImg, x, y, tileWidth, tileHeight);
+                pop();
+            }
+        }
+    } else {
+        background(220, 230, 220); 
+    }
 
     if (!bathroomLevelComplete) {
         handleBathroomMovement();
@@ -149,13 +167,27 @@ function drawBathroomScene() {
     push();
     fill(0, 100, 200); // Blue
     noStroke();
-    targetSquareX = width - targetSquare.w - targetSquare.padding;
+    targetSquareX = width - targetSquare.w - targetSquare.padding - 50;
     targetSquareY = targetSquare.padding;
     //open toilet
     //rect(targetSquareX, targetSquareY, targetSquare.w, targetSquare.h);
     if (bathroomLevelComplete) {
         image(toiletClosedImg, targetSquareX - 125, targetSquareY);
     } else {
+        // Add a glowing effect to the target toilet
+        push();
+        rectMode(CENTER);
+        noStroke();
+        // Opacity and size pulsate over time
+        let glowAlpha = map(sin(millis() * 0.005), -1, 1, 50, 150);
+        let glowSize = map(sin(millis() * 0.005), -1, 1, 0, 15);
+        noFill();
+        strokeWeight(3);
+        stroke(255, 255, 255, glowAlpha);
+        // Center the glow behind the toilet image
+        rect(targetSquareX - 10 + targetSquare.w / 2, targetSquareY + 5 +  targetSquare.h / 2, targetSquare.w + glowSize, targetSquare.h + glowSize, 15);
+        pop();
+
         image(toiletOpenImg, targetSquareX - 125, targetSquareY);
     }
     
@@ -168,7 +200,7 @@ function drawBathroomScene() {
     push();
     fill(200, 0, 100); // Pink
     noStroke();
-    let bottomSqX = width - bottomRightRect.w - bottomRightRect.padding;
+    let bottomSqX = width - bottomRightRect.w - bottomRightRect.padding - 50;
     let bottomSqY = height / 2;
     image(toiletsImg, bottomSqX, bottomSqY);
     //rect(bottomSqX, bottomSqY, bottomRightRect.w, bottomRightRect.h);
@@ -179,9 +211,15 @@ function drawBathroomScene() {
     noStroke();
     let sinkX = middleLeftRect.padding;
     let sinkY = height / 2 - middleLeftRect.h / 2;
-    image(sinksImg, sinkX, sinkY);
-    //rect(sinkX, sinkY, middleLeftRect.w, middleLeftRect.h);
+
+    image(sinksImg, sinkX, sinkY, 150, 525);
+    // rect(sinkX, sinkY + 50, 150, 425);
     pop();
+
+    // Check and draw proximity text for the toilets
+    if (checkToiletProximity()) {
+        drawTextBox("Sorry, but you aren't \n able to use these...");
+    }
 
     drawPlayer();
 
@@ -191,6 +229,7 @@ function drawBathroomScene() {
     }
 
     if (bathroomLevelComplete) {
+        gameState.completed.bathroom = true;
         playerAnimate.frame = 0; 
         playerAnimate.isMoving = false;
         playerAnimate.dir = 2; 
@@ -248,12 +287,12 @@ function handleBathroomMovement() {
 
     //check collision before moving
     let newX = player.x + moveX;
-    if (!peopleCollisionCheck(newX, player.y)) {
+    if (!peopleCollisionCheck(newX, player.y) && !obstacleCollisionCheck(newX, player.y)) {
         player.x = newX;
     }
 
     let newY = player.y + moveY;
-    if (!peopleCollisionCheck(player.x, newY)) {
+    if (!peopleCollisionCheck(player.x, newY) && !obstacleCollisionCheck(player.x, newY)) {
         player.y = newY;
     }
 
@@ -268,7 +307,6 @@ function handleBathroomMovement() {
         playerAnimate.frame = 0;
     }
 
-    //handlePlayerAnimation(currentSpeed);
 }
 
 function checkTargetSquare() {
@@ -290,6 +328,10 @@ function checkTargetSquare() {
 
 function peopleCollisionCheck(x, y) {
     for (let person of bathroomPeople) {
+        // push();
+        // fill('white');
+        // rect(person.x, person.y, person.w, person.h);
+        // pop();
         if (x < person.x + person.w &&
             x + player.w > person.x &&
             y < person.y + person.h &&
@@ -298,4 +340,61 @@ function peopleCollisionCheck(x, y) {
         }
     }
     return false;
+}
+
+function obstacleCollisionCheck(x, y) {
+    // Sinks (middleLeftRect)
+
+    const sinkX = middleLeftRect.padding;
+    const sinkY = height / 2 - middleLeftRect.h / 2;
+    // rect(sinkX, sinkY + 50, 150, 425);
+    if (x < sinkX + 150 &&
+        x + player.w > sinkX &&
+        y < (sinkY + 50) + 425 &&
+        y + player.h > (sinkY + 50)) {
+        return true;
+    }
+
+    // Toilets (bottomRightRect)
+    const bottomSqX = width - bottomRightRect.w - bottomRightRect.padding - 50;
+    const bottomSqY = height / 2;
+    if (x < bottomSqX + bottomRightRect.w &&
+        x + player.w > bottomSqX &&
+        y < bottomSqY + bottomRightRect.h &&
+        y + player.h > bottomSqY) {
+        return true;
+    }
+
+    return false;
+}
+
+function checkToiletProximity() {
+    const PROXIMITY_DISTANCE = 200;
+
+    // Player center
+    let playerCenterX = player.x + player.w / 2;
+    let playerCenterY = player.y + player.h / 2;
+
+    // Toilets (bottomRightRect) position and center
+    const bottomSqX = width - bottomRightRect.w - bottomRightRect.padding - 50;
+    const bottomSqY = height / 2;
+    let rectCenterX = bottomSqX + bottomRightRect.w / 2;
+    let rectCenterY = bottomSqY + bottomRightRect.h / 2;
+
+    let d = dist(playerCenterX, playerCenterY, rectCenterX, rectCenterY);
+
+    return d < PROXIMITY_DISTANCE;
+}
+
+function drawTextBox(content) {
+    push();
+    let textBoxHeight = 100;
+    fill(255, 255, 255, 75);
+    rectMode(CENTER);
+    rect(width / 2, height - 100, 500, 100, 5);
+    fill('black');
+    textSize(24);
+
+    text(content, width / 2, height - textBoxHeight -5);
+    pop();
 }

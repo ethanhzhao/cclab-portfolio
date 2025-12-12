@@ -115,12 +115,12 @@ function setupMirrorScene() {
    //create objects
     sceneObjects.push(new sceneObject(centerScreenX - 500, centerScreenY - 150, clothes1Img, clothes1_noImg, 'Clothes 1', 'Click to try on.', '\nno, They wouldn\'t like this one.', speechBubbleHeartbreak, false));
     sceneObjects.push(new sceneObject(centerScreenX - 700, centerScreenY + 50, clothes2Img, clothes2_noImg, 'Clothes 2', 'Click to try on.\nMaybe you\'ll like this one.', '\nno, no definitely not this one.', speechBubbleThumbsDown, false));
-    sceneObjects.push(new sceneObject(centerScreenX - 300, centerScreenY + 300, clothes3Img, clothes3_noImg, 'Clothes 3', 'Click to try on.\nCan\'t you find one good pair.', '\nno. this is still bad.', speechBubbleMad, false));
+    sceneObjects.push(new sceneObject(centerScreenX - 325, centerScreenY + 275, clothes3Img, clothes3_noImg, 'Clothes 3', 'Click to try on.\nCan\'t you find one good pair.', '\nno. this is still bad.', speechBubbleMad, false));
     sceneObjects.push(new sceneObject(centerScreenX + 600, centerScreenY + 200, clothes4Img, clothes4_noImg, 'Clothes 4', 'Click to try on.\nAnything will do at this point.', '\nNO. it\'s All bad.', speechBubbleMad, false));
     sceneObjects.push(new sceneObject(centerScreenX + 400, centerScreenY - 175, clothes5Img, clothes5_noImg, 'Clothes 5', 'Click to put on.\nJust put this one on.', '... ...', speechBubbleHeartbreak, false));
 
     //mirror object
-    sceneObjects.push(new sceneObject(centerScreenX, 250, mirrorImg, mirror_reflectImg, 'Mirror', null, null, null, true));
+    sceneObjects.push(new sceneObject(centerScreenX, 225, mirrorImg, mirror_reflectImg, 'Mirror', null, null, null, true));
 
     zoomStage = 0;
     currentZoom = 1.0;
@@ -133,15 +133,6 @@ function drawMirrorScene() {
         translate(-width / 2, -height / 2, 0); 
     }
 
-    if (mirrorBkgdImg) {
-        push();
-        imageMode(CORNER);
-        bkgdImg = image(mirrorBkgdImg, 0, 0, width, height);
-        pop();
-    } else {
-        background(200, 200, 220);
-    }
-    
     let now = millis();
     if (zoomStage > 0) {
     
@@ -164,7 +155,7 @@ function drawMirrorScene() {
             let moveElapsed = now - playerMoveStartTime;
             let moveProgress = constrain(moveElapsed / ZOOM_MOVE_DURATION, 0, 1);
             let targetX = centerScreenX - player.w / 2;
-            let targetY = centerScreenY - player.h / 2 - 200;
+            let targetY = centerScreenY - player.h / 2 - 150;
             
             player.x = lerp(playerStartX, targetX, moveProgress);
             player.y = lerp(playerStartY, targetY, moveProgress);
@@ -207,7 +198,19 @@ function drawMirrorScene() {
                 scale(currentZoom);
                 translate(-zoomCenterX, -zoomCenterY);
         }
+    }
+
+    if (mirrorBkgdImg) {
+        push();
+        imageMode(CORNER);
+        image(mirrorBkgdImg, 0, 0, width, height);
+        pop();
     } else {
+        background(200, 200, 220);
+    }
+
+    // If not zooming, handle regular movement
+    if (zoomStage === 0) {
         handleMovementMirror();
     }
 
@@ -222,6 +225,7 @@ function drawMirrorScene() {
 
     textFont(font);
     fill(0);
+
 
     nearbyObject = null;
     
@@ -249,7 +253,7 @@ function drawMirrorScene() {
                 promptTextY = height - 105;
 
                 if (nearbyObject.label == 'Clothes 5' && !checkForClicks()) {
-                    promptDisplayed = "You should try the other ones first."
+                    promptDisplayed = "You should try the \n other ones first."
                     promptColor = 'black';
                     promptTextY = height - 105;
                 }
@@ -260,6 +264,8 @@ function drawMirrorScene() {
             rectMode(CENTER);
             rect(width / 2, height - 100, 500, 100, 5);
             fill(promptColor);
+            textFont(font);
+            fill(0);
             textSize(24);
 
             text(promptDisplayed, width / 2, promptTextY);
@@ -295,7 +301,7 @@ function mouseClickedMirrorScene() {
         if (nearbyObject.label == 'Clothes 5') {
             if (checkForClicks()) {
                 nearbyObject.isClicked = true;
-
+                gameState.completed.mirror = true;
                 zoomStage = 1;
                 zoomStartTime = millis();
             }
@@ -304,4 +310,3 @@ function mouseClickedMirrorScene() {
         }
     }
 }
-

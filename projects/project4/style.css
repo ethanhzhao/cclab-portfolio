@@ -5,3 +5,18 @@ html, body {
 canvas {
   display: block;
 }
+
+.centered-img {
+        display: block;
+        margin: 40px auto; /* Adds vertical space and centers horizontally */
+        max-width: 90%;   /* Ensures the image is responsive */
+}
+
+#sketch-container {
+    display: block;
+    max-width: 600px; /* Set max-width to original canvas width */
+    margin: 30px auto; /* Center the container and add vertical spacing */
+    aspect-ratio: 600 / 800;
+    border-radius: 10px; /* Set the border radius */
+    overflow: hidden; /* This clips the canvas corners */
+}

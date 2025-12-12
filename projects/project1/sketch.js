@@ -3,7 +3,8 @@ let dir = 'right';
 let t = 0;
 
 function setup() {
-  createCanvas(900, 700);
+  let canvas = createCanvas(900, 700);
+  canvas.parent('sketch-container');
 }
 
 function draw() {

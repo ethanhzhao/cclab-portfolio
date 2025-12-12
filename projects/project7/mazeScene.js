@@ -54,7 +54,11 @@ function setupMazeScene() {
 }
 
 function drawMaze() {
-    background(0, 0, 0);
+    if (isTopDown) {
+        background(51); // Dark grey background for letterboxing
+    } else {
+        background(0); // Keep 3D view background black
+    }
   
   //progress
     let elapsedTime = millis() - startTime;
@@ -71,11 +75,26 @@ function drawMaze() {
 
     if (isTopDown) {
         //top down
-        let camDist = 300;
-        camera(0, camDist, 0, // eye
+        let camDist = 500;
+        camera(0, camDist, 0.01, // eye (slight offset to avoid issues)
                0, 0, 0,      // center
-               0, 0, -1);    // up
-        ortho(-width / 2, width / 2, -height / 2, height / 2, 0, camDist * 2);
+               0, 1, 0);    // up
+
+        // Calculate ortho bounds to keep maze tiles square
+        const screenAspect = width / height;
+        const mazeAspect = MAZE_W / MAZE_H;
+        let orthoX, orthoY;
+        
+        if (screenAspect > mazeAspect) {
+            // Screen is wider than maze, so height is the limiting dimension
+            orthoY = (MAZE_H * WALL_SIZE) / 2; // Fit maze height to view
+            orthoX = orthoY * screenAspect;    // Expand view width to match screen aspect
+        } else {
+            // Screen is taller than maze, so width is the limiting dimension
+            orthoX = (MAZE_W * WALL_SIZE) / 2; // Fit maze width to view
+            orthoY = orthoX / screenAspect;    // Expand view height to match screen aspect
+        }
+        ortho(-orthoX, orthoX, -orthoY, orthoY, -camDist, camDist * 2);
     } else {
       //first person
         perspective(PI / 3.0, width / height, 0.1, 1000);
@@ -100,6 +119,20 @@ function drawMaze() {
     //lighting
     ambientLight(100);
     directionalLight(255, 255, 255, -1, -1, -0.5);
+
+    // In top-down view, draw a black plane behind the maze for the border
+    if (isTopDown) {
+        push();
+        translate(0, wallHeight / 2 - 0.1, 0); // Position slightly below the floor
+        rotateX(PI / 2);
+        noStroke();
+        fill(0); // Black for the border area
+        // Make the plane slightly larger than the maze
+        let borderWidth = MAZE_W * WALL_SIZE;
+        let borderHeight = MAZE_H * WALL_SIZE;
+        plane(borderWidth, borderHeight);
+        pop();
+    }
 
     //maze
     drawFloor();
@@ -129,16 +162,20 @@ function drawFloor() {
             if (tileType !== 1) {
                 push();
 
-                let x = (j - MAZE_W / 2 + 0.5) * WALL_SIZE;
-                let z = (i - MAZE_H / 2 + 0.5) * WALL_SIZE;
+                let x = (j - (MAZE_W - 1) / 2) * WALL_SIZE;
+                let z = (i - (MAZE_H - 1) / 2) * WALL_SIZE;
                 translate(x, z, 0);
                 
                 //color logic
                 if (mazeLevelComplete && tileType == 2) {
                     fill(200, 0, 0); //end tile
                 } else {
-                    //texture(floorTexture); //default
-                    fill(0, 0, 0)
+                    if (isTopDown) {
+                        fill(255); // White floor for top-down
+                    } else {
+                        //texture(floorTexture); //default
+                        fill(0, 0, 0); // Black floor for 3D
+                    }
                 }
                 
                 plane(WALL_SIZE, WALL_SIZE);
@@ -285,13 +322,11 @@ function checkEndCondition () {
 function keyPressedMaze(code) {
     //m
     if (code === 77) {
-        background(255, 255, 255);
         isTopDown = !isTopDown;
         if (isTopDown) {
             exitPointerLock();
             isLocked = false;
         } else {
-            background(0);
             lockPointer();
         }
     //0

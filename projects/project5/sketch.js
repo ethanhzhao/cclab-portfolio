@@ -9,6 +9,7 @@ let swim = false;
 let charX, charY, shadowY;
 
 let debug = false;
+let showInstructions = true;
 
 function preload() {
   sandImg = loadImage('./images/sand.jpg');
@@ -52,7 +53,9 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(600, 800);
+  let canvas = createCanvas(600, 800);
+  canvas.parent('sketch-container');
+  
   noStroke();
   rectMode(CENTER);
  
@@ -170,6 +173,10 @@ function draw() {
   
   pop();
   image(currImg, charX, charY, 64, 64);
+
+  if (showInstructions) {
+    drawInstructionText();
+  }
   pop();
   
   if ((keyIsDown(LEFT_ARROW) || keyIsDown('65')) && charX >= -10) {
@@ -207,6 +214,34 @@ function draw() {
   
   //console.log(charX, charY);
   umbrellas();
+}
+
+function keyPressed() {
+  showInstructions = false;
+}
+
+function drawInstructionText() {
+  // Draws a text box above the character
+  const boxWidth = 140;
+  const boxHeight = 25;
+  const textX = charX + 32; // Center with character
+  const textY = charY - 15; // Position above character
+
+  // Text box
+  push();
+  rectMode(CENTER);
+  fill(255, 255, 255, 200); // Semi-transparent white
+  stroke(0);
+  strokeWeight(0.5);
+  rect(textX, textY, boxWidth, boxHeight, 5);
+  pop();
+
+  // Text
+  noStroke();
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(8);
+  text('Use WASD to move me around!', textX, textY);
 }
 
 function beachScene() {

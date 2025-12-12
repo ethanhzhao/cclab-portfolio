@@ -4,41 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ethan Zhao | CC Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="work.html">Other Work</a>
+        <a href="#projects">Project Showcase</a>
+        <a href="about.html">About Me</a>
+        <a href="work.html">Check out my other work!</a>
     </nav>
 
     <main>
-        <h1>Ethan Zhao</h1>
+        <div class="header-image-container">
+            <img src="header-image.png" alt="Header Image" class="header-image">
+        </div>
 
         <section id="about">
             <p>
-                Write a short bio here. What are you interested in? 
-                What kind of creative coding projects do you make?
-            </p>
+                Howdy! My name is Ethan Zhao and I'm an experimental designer passionate about exploring the intersections between design, technology and storytelling! Check out my coding projects below :<span>&#41;</span></p>
         </section>
 
         <section id="projects">
-            <ul>
-                <li><a href="projects/project1/index.html">NYC Glass Dome</a></li>
-                <li><a href="projects/project2/index.html">Fruit Mirror</a></li>
-                <li><a href="projects/project3/index.html">Train Clock</a></li>
-                <li><a href="projects/project4/index.html">Dorae-xquisite Corpse</a></li>
-                <li><a href="projects/project5/index.html">Beachy Illusion</a></li>
-                <li><a href="projects/project6/index.html">Outfit Data Portrait</a></li>
-                <li><a href="projects/project7/index.html">Museum of Memory - Autobiographical Game</a></li>
-            </ul>
+            <div class="project-grid">
+                <div class="project-item">
+                    <a href="projects/project1/index.html" class="project-card">
+                        <img src="projects/project1/thumbnail.png" alt="NYC Glass Dome project thumbnail">
+                    </a>
+                    <div class="project-title">NYC Glass Dome</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project2/index.html" class="project-card">
+                        <img src="projects/project2/thumbnail.png" alt="Fruit Mirror project thumbnail">
+                    </a>
+                    <div class="project-title">Fruit Funhouse Mirror</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project3/index.html" class="project-card">
+                        <img src="projects/project3/thumbnail.png" alt="Train Clock project thumbnail">
+                    </a>
+                    <div class="project-title">Train O'Clock</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project4/index.html" class="project-card">
+                        <img src="projects/project4/thumbnail.png" alt="Dorae-xquisite Corpse project thumbnail">
+                    </a>
+                    <div class="project-title">Dorae-xquisite Corpse</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project5/index.html" class="project-card">
+                        <img src="projects/project5/thumbnail.png" alt="Beachy Illusion project thumbnail">
+                    </a>
+                    <div class="project-title">Beachy Illusion</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project6/index.html" class="project-card">
+                        <img src="projects/project6/thumbnail.png" alt="Outfit Data Portrait project thumbnail">
+                    </a>
+                    <div class="project-title">Outfit Data Portrait</div>
+                </div>
+                <div class="project-item">
+                    <a href="projects/project7/index.html" class="project-card">
+                        <img src="projects/project7/thumbnail.png" alt="Museum of Memory - Autobiographical Game project thumbnail">
+                    </a>
+                    <div class="project-title">Museum of Memory - Autobiographical Game</div>
+                </div>
+            </div>
         </section>
 
         <section id="contact">
-            <a href="mailto:your.email@example.com">Email</a> · 
-            <a href="https://github.com/yourusername">GitHub</a>
+            <a href="https://instagram.com/ethanzha0" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://github.com/ethanhzhao" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:ezhao516@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
         </section>
     </main>
 </body>
